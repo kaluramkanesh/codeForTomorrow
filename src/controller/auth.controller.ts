@@ -5,7 +5,7 @@ import { generationToken } from "../utils/jwt";
 export const register = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const hashed = await bcrypt.hash(password, 10);
-  const user = await prisma.user.create({ data: { email, password, hashed } });
+  const user = await prisma.user.create({ data: { email, password:hashed } });
   return res
     .status(201)
     .json({ status: true, message: "User created successfully", user: user });
@@ -44,7 +44,7 @@ export const login = async (req: Request, res: Response) => {
 export const logout = async (req: any, res: Response) => {
   try {
     const sessionId = req.sessionId;
-    await prisma.sessionId.delete({ where: { id: sessionId } });
+    await prisma.user.delete({ where: { id: sessionId } });
     res.clearCookie("token");
     res.status(200).json({ status: true, message: "Logged out" });
   } catch (error) {
