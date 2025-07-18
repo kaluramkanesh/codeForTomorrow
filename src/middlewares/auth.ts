@@ -12,7 +12,9 @@ export const authenticate = async (
     if (!token) {
       return res.status(401).json({ status: false, message: "Unauthorized" });
     }
+   
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as any;
+
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
     });
@@ -21,7 +23,7 @@ export const authenticate = async (
         .status(201)
         .json({ status: false, message: "Invalid session" });
     }
-    req.user = { id: user.id };
+    req.userId = user.id;
     next();
   } catch (error) {
     return res.status(401).json({ status: false, message: "Invalid token" });
