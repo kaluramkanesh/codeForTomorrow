@@ -19,6 +19,11 @@ app.use((err: any, req: any, res: any, next: any) => {
     .status(500)
     .json({ status: false, error: err.message || "Internal error" });
 });
+
+// app.get("/testing",(req:any,res:any)=>{
+//   return res.status(200).json({status:true,message:"testing done server is running"})
+// })
+
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
